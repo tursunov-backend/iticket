@@ -7,16 +7,16 @@ router = APIRouter(
 )
 
 
-@router.get("/users")
+@router.get("/")
 async def users_view():
     pass
 
 
-@router.get("/users/{id}")
+@router.get("/{id}")
 async def get_user_view(id: int):
     pass
 
 
-@router.patch("/users/{id}")
+@router.patch("/{id}")
 async def update_user_view(id):
     pass
