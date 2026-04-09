@@ -1,10 +1,15 @@
 from fastapi import FastAPI
 
-from app.db.init_db import init_db
+from app.db.session import engine
+from app.models.base import Base
+from app.models.user import User
+from app.api import router
 
-init_db()
+
 app = FastAPI(title="Iticket API")
+app.include_router(router)
 
+Base.metadata.create_all(engine)
 
 
 @app.get("/")
