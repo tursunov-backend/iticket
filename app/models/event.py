@@ -15,7 +15,7 @@ class Event(Base, TimestampMixin):
     category_id: Mapped[int] = mapped_column(
         ForeignKey("categories.id", ondelete="SET NULL")
     )
-    venue_id: Mapped[int] = mapped_column(ForeignKey("venues.id", ondelete="SET NULL"))
+    venue_id: Mapped[int] = mapped_column(ForeignKey("venues.id", ondelete="SET NULL"), nullable=True)
 
     category: Mapped["Category"] = relationship(back_populates="events")
     venue: Mapped["Venue"] = relationship(back_populates="events")

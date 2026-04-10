@@ -89,7 +89,7 @@ class EventService:
 
         if filter_params.category_id:
             query = query.filter(Event.category_id == filter_params.category_id)
-        if filter_params.active_only is True:
+        if filter_params.active_only:
             query = query.filter(Event.date >= datetime.now())
         if filter_params.city:
             query = query.join(Event.venue).filter(

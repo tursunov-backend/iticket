@@ -27,7 +27,7 @@ class Ticket(Base, TimestampMixin):
     )
     status: Mapped[TicketStatus] = mapped_column(
         Enum(TicketStatus),
-        default=TicketStatus.RESERVED
+        default=TicketStatus.AVAILABLE
     )
 
     order_item: Mapped["OrderItem"] = relationship(

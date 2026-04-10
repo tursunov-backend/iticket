@@ -25,7 +25,7 @@ class OrderService:
             self.db.add(order)
             self.db.flush()
 
-        ticket = Ticket()
+        ticket = Ticket(status=TicketStatus.RESERVED)
         self.db.add(ticket)
         self.db.flush()
 
@@ -132,7 +132,10 @@ class OrderService:
 
         if order.user_id != user.id and user.role != "admin":
             raise HTTPException(status_code=403, detail="Not authorized to cancel this order")
-
+        
+        if order.status == OrderStatus.CANCELLED:
+            raise HTTPException(status_code=400, detail="Order has been already cancelled")
+        
         order.status = OrderStatus.CANCELLED.value
 
         for item in order.items:

@@ -51,3 +51,11 @@ class TicketService:
             user_id=ticket.order_item.order.user_id,
             status=TicketStatus(ticket.status).name,
         )
+    
+    def create_tickets(self, count: int) -> list[Ticket]:
+        tickets = []
+        for i in count:
+            t = Ticket()
+            tickets.append(t)
+
+        return tickets
