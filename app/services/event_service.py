@@ -1,9 +1,11 @@
+from datetime import datetime
+
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.models import Event, TicketType
+from app.models import Event, TicketType, Venue
 
-from app.schemas.event import CreateEvent, UpdateEvent
+from app.schemas.event import CreateEvent, UpdateEvent, EVentFilter
 
 
 class EventService:
@@ -81,6 +83,23 @@ class EventService:
             self.db.commit()
 
         return event
+
+    def get_events(self, filter_params: EVentFilter):
+        query = self.db.query(Event)
+
+        if filter_params.category_id:
+            query = query.filter(Event.category_id == filter_params.category_id)
+        if filter_params.active_only is True:
+            query = query.filter(Event.date >= datetime.now())
+        if filter_params.city:
+            query = query.join(Event.venue).filter(
+                Venue.location.ilike(f"%{filter_params.city}%")
+            )
+        if filter_params.page and filter_params.page_size:
+            offset = (filter_params.page - 1) * filter_params.page_size
+            query = query.offset(offset).limit(filter_params.page_size)
+
+        return query.all()
 
     def delete_event(self, id):
         event = self.get_event_by_id(id)

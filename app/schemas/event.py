@@ -49,3 +49,11 @@ class EventResponse(BaseModel):
     venue_id: int
 
     ticket_types: list[TicketQuantity]
+
+
+class EVentFilter(BaseModel):
+    category_id: int | None = Field(default=None, gt=0)
+    city: str | None = Field(default=None, max_length=100)
+    active_only: bool | None = Field(default=None)
+    page: int = Field(default=1, gt=0)
+    page_size: int = Field(default=10, gt=0, le=100)

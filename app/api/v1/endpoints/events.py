@@ -1,10 +1,10 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Path, Body
+from fastapi import APIRouter, Depends, HTTPException, Path, Body, Query
 from sqlalchemy.orm import Session
 
 from app.services.event_service import EventService
-from app.schemas.event import CreateEvent, EventResponse, UpdateEvent
+from app.schemas.event import CreateEvent, EVentFilter, EventResponse, UpdateEvent
 from app.core.security import get_admin
 from app.db.session import get_db
 from app.models.user import User
@@ -17,9 +17,12 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[EventResponse])
-async def events_view(db: Annotated[Session, Depends(get_db)]):
+async def events_view(
+    filter_params: Annotated[EVentFilter, Query()],
+    db: Annotated[Session, Depends(get_db)],
+):
     event_service = EventService(db)
-    events = event_service.get_all_events()
+    events = event_service.get_events(filter_params)
 
     return events
 
