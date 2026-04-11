@@ -20,9 +20,8 @@ class OrderItemResponse(BaseModel):
     ticket_id: int
     ticket_type_id: int
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = {"from_attributes": True}
+
 
 class OrderResponse(BaseModel):
     id: int
@@ -31,9 +30,8 @@ class OrderResponse(BaseModel):
     status: OrderStatus
     order_items: list[OrderItemResponse]
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = {"from_attributes": True}
+
 
 class UserOrdersResponse(BaseModel):
     user_id: int

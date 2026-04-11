@@ -16,7 +16,11 @@ class TicketService:
         for order in orders:
             if order.status == "paid":
                 for item in order.items:
-                    ticket = self.db.query(Ticket).filter(Ticket.id == item.ticket_id).first()
+                    ticket = (
+                        self.db.query(Ticket)
+                        .filter(Ticket.id == item.ticket_id)
+                        .first()
+                    )
                     if ticket:
                         tickets.append(
                             TicketResponse(
@@ -25,11 +29,11 @@ class TicketService:
                                 ticket_type_id=item.ticket_type_id,
                                 user_id=order.user_id,
                                 status=TicketStatus(ticket.status).name,
-                                code=ticket.code
+                                code=ticket.code,
                             )
                         )
         return tickets
-    
+
     def verify_ticket(self, code: str) -> TicketResponse:
         ticket = self.db.query(Ticket).filter(Ticket.code == code).first()
         if not ticket:
@@ -38,12 +42,12 @@ class TicketService:
             raise HTTPException(status_code=400, detail="Ticket is not paid")
         if ticket.status == TicketStatus.USED.value:
             raise HTTPException(status_code=400, detail="Ticket has already been used")
-        
+
         ticket.status = TicketStatus.USED.value
-        
+
         self.db.commit()
         self.db.refresh(ticket)
-        
+
         return TicketResponse(
             id=ticket.id,
             event_id=ticket.order_item.ticket_type.event_id,
@@ -51,7 +55,7 @@ class TicketService:
             user_id=ticket.order_item.order.user_id,
             status=TicketStatus(ticket.status).name,
         )
-    
+
     def create_tickets(self, count: int) -> list[Ticket]:
         tickets = []
         for i in count:

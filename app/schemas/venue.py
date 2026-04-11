@@ -6,9 +6,11 @@ class VenueResponse(BaseModel):
     name: str
     location: str
 
+
 class CreateVenue(BaseModel):
     name: str
     location: str
+
 
 class UpdateVenue(BaseModel):
     name: str | None = None

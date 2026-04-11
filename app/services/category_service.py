@@ -28,13 +28,13 @@ class CategoryService:
     def get_all_categories(self) -> list[Category]:
         categories = self.db.query(Category).all()
         return categories
-    
+
     def get_category_by_id(self, id: int) -> Category:
         category = self.db.query(Category).filter(Category.id == id).first()
         if not category:
             raise HTTPException(status_code=404, detail="Category not found")
         return category
-    
+
     def delete_category(self, id: int):
         category = self.get_category_by_id(id)
         self.db.delete(category)

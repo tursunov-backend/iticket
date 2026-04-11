@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from fastapi.security import HTTPBasicCredentials
 from sqlalchemy.orm import Session
 from starlette import status
 
@@ -42,10 +43,12 @@ class UserService:
 
         return user
 
-    def authenticate_user(self, data: UserLogin) -> UserLoginResponse | None:
-        user = self.get_user_by_username(data.username)
+    def authenticate_user(
+        self, credentials: HTTPBasicCredentials
+    ) -> UserLoginResponse | None:
+        user = self.get_user_by_username(credentials.username)
 
-        if not user or not verify_password(data.password, user.password_hash):
+        if not user or not verify_password(credentials.password, user.password_hash):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
             )
@@ -58,7 +61,6 @@ class UserService:
         return UserLoginResponse(access_token=access_token, refresh_token=refresh_token)
 
     def refresh_access_token(self, refresh_token: str) -> UserLoginResponse:
-
         payload = verify_refresh_token(refresh_token)
 
         user_id = payload.get("sub")

@@ -15,6 +15,7 @@ router = APIRouter(
     tags=["venues"],
 )
 
+
 @router.get("/{id}", response_model=VenueResponse)
 async def get_venue_view(
     id: Annotated[int, Path()], db: Annotated[Session, Depends(get_db)]
@@ -23,6 +24,7 @@ async def get_venue_view(
     venue = venue_service.get_venue_by_id(id)
 
     return venue
+
 
 @router.get("/", response_model=list[VenueResponse])
 async def venues_view(db: Annotated[Session, Depends(get_db)]):
@@ -42,6 +44,7 @@ async def create_venue_view(
     venue = venue_service.create_venue(data=data)
 
     return venue
+
 
 @router.patch("/{id}", response_model=VenueResponse)
 async def update_venue_view(

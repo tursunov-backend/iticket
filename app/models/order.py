@@ -13,9 +13,11 @@ class OrderStatus(str, enum.Enum):
     CANCELLED = "cancelled"
     REFUNDED = "refunded"
 
+
 class PaymentMethod(str, enum.Enum):
     CREDIT_CARD = "credit_card"
     CASH = "cash"
+
 
 class Order(Base, TimestampMixin):
     __tablename__ = "orders"

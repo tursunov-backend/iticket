@@ -1,6 +1,13 @@
 import enum
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator, field_validator, EmailStr
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    model_validator,
+    field_validator,
+    EmailStr,
+)
 
 
 class RoleEnum(str, enum.Enum):

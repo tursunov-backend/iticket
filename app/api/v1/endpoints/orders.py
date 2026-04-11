@@ -4,7 +4,13 @@ from fastapi import APIRouter, Depends, Path, Body
 from sqlalchemy.orm import Session
 
 from app.services.order_service import OrderService
-from app.schemas.order import CreateOrder, OrderItemResponse, OrderResponse, UserOrdersResponse, PaymentData
+from app.schemas.order import (
+    CreateOrder,
+    OrderItemResponse,
+    OrderResponse,
+    UserOrdersResponse,
+    PaymentData,
+)
 from app.core.security import get_admin, get_user
 from app.db.session import get_db
 from app.models.user import User
@@ -40,7 +46,9 @@ async def my_orders_view(
 
 
 @router.get("/", response_model=list[UserOrdersResponse])
-async def all_orders_view(admin: Annotated[User, Depends(get_admin)], db: Annotated[Session, Depends(get_db)]):
+async def all_orders_view(
+    admin: Annotated[User, Depends(get_admin)], db: Annotated[Session, Depends(get_db)]
+):
     order_service = OrderService(db)
     orders = order_service.get_all_orders()
 

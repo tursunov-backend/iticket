@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.orm import Session
 
 from app.core.security import get_user
@@ -35,11 +35,11 @@ async def register_view(
 
 @router.post("/login", response_model=UserLoginResponse)
 async def login_view(
-    data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    credentinals: Annotated[HTTPBasicCredentials, Depends(HTTPBasic())],
     db: Annotated[Session, Depends(get_db)],
 ):
     user_service = UserService(db)
-    login_response = user_service.authenticate_user(data)
+    login_response = user_service.authenticate_user(credentinals)
 
     return login_response
 

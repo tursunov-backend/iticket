@@ -45,9 +45,6 @@ def verify_access_token(token: str) -> dict:
 
     if payload.get("type") != "access":
         raise HTTPException(401, "Invalid token type")
-    
-    if payload.get("exp") < datetime.utcnow().timestamp():
-        raise HTTPException(401, "Token has expired")
 
     return payload
 

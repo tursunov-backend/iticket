@@ -10,11 +10,11 @@ from app.services.ticket_service import TicketService
 from app.schemas.ticket import TicketResponse
 
 
-
 router = APIRouter(
     prefix="/tickets",
     tags=["tickets"],
 )
+
 
 @router.get("/my", response_model=list[TicketResponse])
 async def my_tickets_view(
@@ -25,6 +25,7 @@ async def my_tickets_view(
     tickets = ticket_service.get_tickets_by_user(user)
 
     return tickets
+
 
 @router.get("/verify/{code}", response_model=TicketResponse)
 async def verify_ticket_view(

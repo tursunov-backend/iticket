@@ -5,11 +5,19 @@ import uuid
 from sqlalchemy.orm import Session
 
 from app.models import (
-    Category, Event, Venue,
-    TicketType, Ticket,
-    User, Order, OrderItem,
-    OrderStatus, PaymentMethod,
-    TIcketTypeEnum, TicketStatus, RoleEnum
+    Category,
+    Event,
+    Venue,
+    TicketType,
+    Ticket,
+    User,
+    Order,
+    OrderItem,
+    OrderStatus,
+    PaymentMethod,
+    TIcketTypeEnum,
+    TicketStatus,
+    RoleEnum,
 )
 from app.core.security import hash_password
 from app.db.session import get_db
@@ -28,7 +36,6 @@ def seed_db(db: Session):
     db.add_all(categories)
     db.flush()
 
-
     venues = [
         Venue(name="Humo Arena", location="Tashkent"),
         Venue(name="UzExpo Center", location="Tashkent"),
@@ -37,14 +44,13 @@ def seed_db(db: Session):
     db.add_all(venues)
     db.flush()
 
-
     events = []
     for i in range(5):
         event = Event(
-            title=f"Event {i+1}",
+            title=f"Event {i + 1}",
             date=datetime.now() + timedelta(days=random.randint(1, 30)),
             category_id=random.choice(categories).id,
-            venue_id=random.choice(venues).id
+            venue_id=random.choice(venues).id,
         )
         events.append(event)
 
@@ -58,7 +64,7 @@ def seed_db(db: Session):
                 name=t_type,
                 price=random.uniform(10, 100),
                 quantity=50,
-                event_id=event.id
+                event_id=event.id,
             )
             ticket_types.append(tt)
 
@@ -68,9 +74,7 @@ def seed_db(db: Session):
     tickets = []
     for tt in ticket_types:
         for _ in range(tt.quantity):
-            ticket = Ticket(
-                status=TicketStatus.AVAILABLE
-            )
+            ticket = Ticket(status=TicketStatus.AVAILABLE)
             tickets.append(ticket)
 
     db.add_all(tickets)
@@ -83,7 +87,7 @@ def seed_db(db: Session):
             last_name="User",
             username="admin",
             email="admin@example.com",
-            password_hash=hash_password("11111111")
+            password_hash=hash_password("11111111"),
         ),
         User(
             role=RoleEnum.USER,
@@ -91,7 +95,7 @@ def seed_db(db: Session):
             last_name="Doe",
             username="johndoe",
             email="john@example.com",
-            password_hash=hash_password("11111111")
+            password_hash=hash_password("11111111"),
         ),
     ]
     db.add_all(users)
@@ -99,11 +103,7 @@ def seed_db(db: Session):
 
     orders = []
     for user in users:
-        order = Order(
-            user_id=user.id,
-            status=OrderStatus.PENDING,
-            payment_method=None
-        )
+        order = Order(user_id=user.id, status=OrderStatus.PENDING, payment_method=None)
         orders.append(order)
 
     db.add_all(orders)
@@ -116,12 +116,8 @@ def seed_db(db: Session):
         selected_tickets = random.sample(tickets, 2)
 
         for t in selected_tickets:
-            item = OrderItem(
-            order_id=order.id,
-            ticket_type_id=tt.id,
-            ticket_id=t.id
-        )
-            
+            item = OrderItem(order_id=order.id, ticket_type_id=tt.id, ticket_id=t.id)
+
             db.add(item)
             db.flush()
 

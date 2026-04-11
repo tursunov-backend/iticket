@@ -11,13 +11,13 @@ class VenueService:
 
     def get_all_venues(self) -> list[Venue]:
         return self.db.query(Venue).all()
-    
+
     def get_venue_by_id(self, id: int) -> Venue:
         venue = self.db.query(Venue).filter(Venue.id == id).first()
         if not venue:
             raise HTTPException(status_code=404, detail="Venue not found")
         return venue
-    
+
     def create_venue(self, data: VenueResponse) -> Venue:
         venue = Venue(name=data.name, location=data.location)
 
@@ -26,7 +26,7 @@ class VenueService:
         self.db.refresh(venue)
 
         return venue
-    
+
     def update_venue(self, id: int, data: VenueResponse) -> Venue:
         venue = self.get_venue_by_id(id)
 
@@ -39,9 +39,9 @@ class VenueService:
         self.db.refresh(venue)
 
         return venue
-    
+
     def delete_venue(self, id: int):
         venue = self.get_venue_by_id(id)
-        
+
         self.db.delete(venue)
         self.db.commit()
