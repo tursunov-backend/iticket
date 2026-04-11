@@ -18,11 +18,7 @@ class OrderService:
         self.db = db
 
     def create_order(self, data: CreateOrder, user: User) -> OrderItemResponse:
-        ticket_type = (
-            self.db.query(TicketType)
-            .filter(TicketType.id == data.ticket_type_id)
-            .first()
-        )
+        ticket_type = self.db.query(TicketType).get(data.ticket_type_id)
         if not ticket_type:
             raise HTTPException(status_code=404, detail="Ticket type not found")
 

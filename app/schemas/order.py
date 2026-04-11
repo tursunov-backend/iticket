@@ -13,6 +13,7 @@ class OrderStatus(enum.Enum):
 
 class CreateOrder(BaseModel):
     ticket_type_id: int = Field(gt=0)
+    # quantity
 
 
 class OrderItemResponse(BaseModel):
