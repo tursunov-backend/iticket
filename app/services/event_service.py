@@ -4,8 +4,8 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.models import Event, TicketType, Venue, Category
-
 from app.schemas.event import CreateEvent, UpdateEvent, EVentFilter
+from app.utils.telegram_service import TelegramService
 
 
 class EventService:
@@ -50,6 +50,9 @@ class EventService:
                 ticket_types.append(ticket_type)
             self.db.add_all(ticket_types)
             self.db.commit()
+
+        tg_service = TelegramService()
+        tg_service.send_event(event)
 
         return event
 

@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     EXPIRE_MINUTES: int
     REFRESH_EXPIRE_DAYS: int
 
+    telegram_channel: str
+    telegram_bot_token: str
+
     class Config:
         env_file = ".env"
 
